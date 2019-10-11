@@ -20,23 +20,36 @@ def file_utha(lang):
 def diff():
     data = request.get_json()
     lang, script_file, test_case = data['lang'], data['script_file'], data['test_case']
-    if lang=="Python":
-        correct_output = subprocess.run(['python3', './Codes/Correct/Python/'+script_file], \
-            stdout=PIPE, input=test_case, encoding='ascii')
-        wrong_output = subprocess.run(['python3', './Codes/Wrong/Python/'+script_file], \
+    correct_output = run_code('Correct', lang, script_file, test_case)
+    wrong_output = run_code('Wrong', lang, script_file, test_case)
+    return {
+        'answer': correct_output==wrong_output
+    }
+
+@app.route('/output_de', methods=['GET'])
+def get_output():
+    data = request.get_json()
+    lang, script_file, test_case = data['lang'], data['script_file'], data['test_case']
+    try:
+        output = run_code('Wrong', lang, script_file, test_case)
+        return {
+            'output': output,
+            'status': 'Success'
+        }
+    except:
+        return {'status': 'Failed'}
+    
+def run_code(code_type, lang, script_file, test_case):
+    if lang=='Python':
+        output = subprocess.run(['python3', './Codes/{}/{}/{}'.format(code_type, lang, script_file)], \
             stdout=PIPE, input=test_case, encoding='ascii')
     elif lang=='CPP':
-        correct_output = subprocess.run(['./Codes/Wrong/CPP/'+script_file.split('.')[0]], \
+        output = subprocess.run(['./Codes/{}/{}/{}'.format(code_type, lang, script_file.split('.')[0])], \
             stdout=PIPE, input=test_case, encoding='ascii')
-        wrong_output = subprocess.run(['./Codes/Correct/CPP/'+script_file.split('.')[0]], \
-            stdout=PIPE, input=test_case, encoding='ascii') 
     else:
-        correct_output = subprocess.run(['java', script_file.split('.')[0], '-classpath' './Codes/Wrong/Java/'], \
+        output = subprocess.run(['java', '-cp', './Codes/{}/{}'.format(code_type, lang), script_file.split('.')[0]], \
             stdout=PIPE, input=test_case, encoding='ascii')
-        wrong_output = subprocess.run(['java', script_file.split('.')[0], '-classpath ', './Codes/Correct/Java/'], \
-            stdout=PIPE, input=test_case, encoding='ascii')
-
-    return correct_output.stdout==wrong_output.stdout
+    return output.stdout
 
 if __name__=='__main__':
     app.run()
