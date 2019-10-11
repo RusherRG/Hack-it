@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HackIT</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/railscasts.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+    <div class="containerr">
+        <ul class="progressbar">
+            <li>login</li>
+            <li class="active qb" id="q0">Question 1</li>
+            <li class="qb" id="q1">Question 2</li>
+            <li class="qb" id="q2">Question 3</li>
+            <li class="qb" id="q3">Submit</li>
+        </ul>
+    </div>
+    <p id="demo"></p>
+    <div class="qcont q0 activeq">
+        <div class="hide">{{data.lang[0]}} Q0</div>
+        <div class="ps">
+            <span>{{ data.ps[0]|safe }}</span>
+        </div>
+        <div>
+            <div class="code">
+                <pre><code class="{{data.lang[0]}}">{{ data.code[0] }}</code></pre>
+            </div>
+            <div class="func">
+                <span style="margin-bottom: 15px;">Input Case:</span>
+                <div class="input">
+                <textarea style="height: 100%"></textarea>
+                </div>
+                <div class="action">
+                    <div class="run" id="submitCode">
+                        SUBMIT &nbsp;<i class="material-icons">send</i>
+                    </div>
+                    <div class="next">
+                        Next &nbsp;<i class="material-icons">send</i>
+                    </div>
+                </div>
+                <div class="output">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="qcont q1">
+        <div class="hide">{{data.lang[0]}} Q1</div>
+        <div class="ps">
+            <span>{{ data.ps[1]|safe }}</span>
+        </div>
+        <div>
+            <div class="code">
+                <pre><code class="{{data.lang[1]}}">{{ data.code[1] }}</code></pre>
+            </div>
+            <div class="func">
+                <span style="margin-bottom: 15px;">Input Case:</span>
+                <div class="input">
+                    <textarea style="height: 100%"></textarea>
+                </div>
+                <div class="action">
+                    <div class="run">
+                        SUBMIT &nbsp;<i class="material-icons">send</i>
+                    </div>
+                    <div class="next">
+                        Next &nbsp;<i class="material-icons">send</i>
+                    </div>
+                </div>
+                <div class="output">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="qcont q2">
+        <div class="hide">{{data.lang[0]}} Q2</div>
+        <div class="ps">
+            <span>{{ data.ps[2]|safe }}</span>
+        </div>
+        <div>
+            <div class="code">
+                <pre><code class="{{data.lang[2]}}">{{ data.code[2] }}</code></pre>
+            </div>
+            <div class="func">
+                <span style="margin-bottom: 15px;">Input Case:</span>
+                <div class="input">
+                    <textarea style="height: 100%"></textarea>
+                </div>
+                <div class="action">
+                    <div class="run">
+                        SUBMIT &nbsp;<i class="material-icons">send</i>
+                    </div>
+                    <div class="next">
+                        Next &nbsp;<i class="material-icons">send</i>
+                    </div>
+                </div>
+                <div class="output">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="qcont q3">
+        <div class="ps">
+            <span>Press the BIG ******* Green Button if you are really sure you have hacked us :)</span>
+            <div class="submitRound">
+                SUBMIT
+            </div>
+        </div>
+    </div>
+    <div id="snackbar">Some text some message..</div>
+    <div id="username" class="hide">{{data.username}}</div>
+    <div id="timer" class="hide">{{data.timer}}</div>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script src="static/js/index.js"></script>
+
+</body>
+</html>
