@@ -31,7 +31,7 @@ def check_credentials(username, password):
         else:
             db.insert({'username': username, 'password': password, 'time': timer, 'penalty': 0})
             return 0
-    return False
+    return None
 
 
 def run_code(q, lang, test_case, code_type):
@@ -50,7 +50,7 @@ def run_code(q, lang, test_case, code_type):
 @app.route('/check_kar')
 def diff():
     data = request.args.to_dict()
-    print(data)
+    print(data, "data")
     username = data['username']
     lang, q, test_case = data['lang'].strip(), data['q'].strip(), data['test_case']
     correct_output = run_code(q, lang, test_case, 'correct')
@@ -91,8 +91,9 @@ def index():
     try:
         data = request.args.to_dict()
         timer = check_credentials(data['username'], data['password'])
+        print(timer)
         username = data['username']
-        if timer:
+        if timer!=None:
             data = {
                 'username': username,
                 'ps': [],
@@ -114,7 +115,8 @@ def index():
             return render_template('index.html', data=data)
         else:
             return render_template('login.html')
-    except:
+    except Exception as e:
+        print(e)
         return render_template('login.html')
 
 
