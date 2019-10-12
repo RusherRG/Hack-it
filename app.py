@@ -24,7 +24,7 @@ def check_credentials(username, password):
         db = connect().round2
         user = db.find_one({'username': username, 'password': password})
         timer = time.time()
-        print(username, password)
+        # print(username, password)
         if user:
             print(timer - user['time'] + 60*user['penalty'])
             return timer - user['time'] + 60*user['penalty']
@@ -32,10 +32,12 @@ def check_credentials(username, password):
             db.insert({'username': username, 'password': password, 'time': timer, 'penalty': 0})
             print("inserting new")
             return 0
+    print("Not found")
     return None
 
 
 def run_code(q, lang, test_case, code_type):
+    print(lang)
     if lang in ['python', 'java']:
         output = subprocess.run(['python3', './Codes/{}/{}/{}.py'.format(phase, q, code_type)],
                                 stdout=PIPE, input=test_case, encoding='ascii')
@@ -51,7 +53,7 @@ def run_code(q, lang, test_case, code_type):
 @app.route('/check_kar')
 def diff():
     data = request.args.to_dict()
-    print(data, "data")
+    # print(data, "data")
     username = data['username']
     lang, q, test_case = data['lang'].strip(), data['q'].strip(), data['test_case']
     correct_output = run_code(q, lang, test_case, 'correct')

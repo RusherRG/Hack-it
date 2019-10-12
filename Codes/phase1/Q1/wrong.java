@@ -10,7 +10,7 @@ public class Weed {
 	    c = c / x;
 	    sum = calc(c, x, sum);
 	    System.out.println(sum);
-		
+
 	}
 	static int calc(int c, int x, int sum)
 	{
