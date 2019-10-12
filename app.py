@@ -13,7 +13,7 @@ phase = "phase1"
 
 
 def connect():
-    client = MongoClient(mongodb_url)
+    client = MongoClient(mongodb_url, retryWrites=False)
     db = client.crackathon
     return db
 
