@@ -24,12 +24,13 @@ def check_credentials(username, password):
         db = connect().round2
         user = db.find_one({'username': username, 'password': password})
         timer = time.time()
-        print(user)
+        print(username, password)
         if user:
             print(timer - user['time'] + 60*user['penalty'])
             return timer - user['time'] + 60*user['penalty']
         else:
             db.insert({'username': username, 'password': password, 'time': timer, 'penalty': 0})
+            print("inserting new")
             return 0
     return None
 
@@ -91,6 +92,7 @@ def index():
     try:
         data = request.args.to_dict()
         timer = check_credentials(data['username'], data['password'])
+        print(data)
         print(timer)
         username = data['username']
         if timer!=None:
@@ -111,6 +113,7 @@ def index():
                     code = ''.join(code[1:])
                 data['ps'].append(ps)
                 data['code'].append(code)
+            print(data)
             print("start render")
             return render_template('index.html', data=data)
         else:
