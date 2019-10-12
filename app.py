@@ -60,11 +60,12 @@ def diff():
     wrong_output = run_code(q, lang, test_case, 'wrong')
     print(correct_output)
     print(wrong_output)
-    if correct_output!=wrong_output:
+    db = connect().round2
+    if correct_output != wrong_output:
+        db.update_one({'username': username}, {'$set': {q: True}})
         status = "green"
         message = "Yayayay!! You hacked it"
     else:
-        db = connect().round2
         db.update_one({'username': username}, {'$inc': {'penalty': 1}})
         status = "red"
         message = ":/ Keep on trying or you'll be hacked"
