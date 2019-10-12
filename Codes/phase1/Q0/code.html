@@ -1,16 +1,15 @@
 python
-x,y = map(int , input().split())
-z= x-y
-lz = len(str(z))
-n =z+1
-ne = z-1
-ln = len(str(n))
-lne = len(str(ne))
-if lne < lz:
-  print(ne)
-elif ln > lz:
-    print(n)
-elif lne == lz:
-    print(n)
-elif ln == lz:
-    print(ne)
+n,m,r = map(int,input().split());
+buy=list(map(int,input().split())) #n inputs
+sell=list(map(int,input().split())) #m inputs
+
+x = min(buy)
+y = max(sell)
+
+
+num = r//x
+c = num*x
+e = num*y
+r = r-c+e
+
+print(r)

@@ -1,7 +1,14 @@
-x,y = map(int , input().split())
-sub = x-y
-if sub % 10 == 9:
-    sub = sub-1
-else:
-    sub = sub+1
-print(sub)
+n,m,r = map(int,input().split());
+buy=list(map(int,input().split())) #n inputs
+sell=list(map(int,input().split())) #m inputs
+
+x = min(buy)
+y = max(sell)
+
+if x<=y:
+  num = r//x
+  c = num*x
+  e = num*y
+  r = r-c+e
+
+print(r)
