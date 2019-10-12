@@ -24,8 +24,10 @@ def check_credentials(username, password):
         db = connect().round2
         user = db.find_one({'username': username, 'password': password})
         timer = time.time()
+        print(user)
         if user:
-            return timer - user['time'] - 60*user['penalty']
+            print(timer - user['time'] + 60*user['penalty'])
+            return timer - user['time'] + 60*user['penalty']
         else:
             db.insert({'username': username, 'password': password, 'time': timer, 'penalty': 0})
             return 0
@@ -33,32 +35,34 @@ def check_credentials(username, password):
 
 
 def run_code(q, lang, test_case, code_type):
-    if lang == 'python':
-        output = subprocess.run(['python3', './Codes/{}/{}/{}_sol.py'.format(phase, q, code_type)],
+    if lang in ['python', 'java']:
+        output = subprocess.run(['python3', './Codes/{}/{}/{}.py'.format(phase, q, code_type)],
                                 stdout=PIPE, input=test_case, encoding='ascii')
-    elif lang == 'CPP':
-        output = subprocess.run(['./Codes/{}/{}/{}_sol'.format(phase, q, code_type)],
+    elif lang == 'cpp':
+        output = subprocess.run(['./Codes/{}/{}/{}'.format(phase, q, code_type)],
                                 stdout=PIPE, input=test_case, encoding='ascii')
     else:
-        output = subprocess.run(['java', '-cp', './Codes/{}/{}/'.format(code_type, lang), 'sol'],
-                                stdout=PIPE, input=test_case, encoding='ascii')
+        output = ""
+        return output
     return output.stdout
 
 
 @app.route('/check_kar')
 def diff():
     data = request.args.to_dict()
+    print(data)
     username = data['username']
     lang, q, test_case = data['lang'].strip(), data['q'].strip(), data['test_case']
     correct_output = run_code(q, lang, test_case, 'correct')
     wrong_output = run_code(q, lang, test_case, 'wrong')
+    print(correct_output)
+    print(wrong_output)
     if correct_output!=wrong_output:
         status = "green"
         message = "Yayayay!! You hacked it"
     else:
         db = connect().round2
         db.update_one({'username': username}, {'$inc': {'penalty': 1}})
-
         status = "red"
         message = ":/ Keep on trying or you'll be hacked"
 
@@ -86,7 +90,6 @@ def get_output():
 def index():
     try:
         data = request.args.to_dict()
-        print(data)
         timer = check_credentials(data['username'], data['password'])
         username = data['username']
         if timer:
@@ -97,17 +100,17 @@ def index():
                 'lang': [],
                 'timer': timer,
             }
-            for i in range(1, 4):
-                with open('input/{}/Q{}/problemstatement.html'.format(phase, i)) as f:
+            for i in range(3):
+                with open('Codes/{}/Q{}/problem_statement.html'.format(phase, i)) as f:
                     ps = f.readlines()
                     ps = ' '.join(ps)
-                with open('input/{}/Q{}/code.html'.format(phase, i)) as f:
+                with open('Codes/{}/Q{}/code.html'.format(phase, i)) as f:
                     code = f.readlines()
                     data['lang'].append(code[0])
                     code = ''.join(code[1:])
                 data['ps'].append(ps)
                 data['code'].append(code)
-
+            print("start render")
             return render_template('index.html', data=data)
         else:
             return render_template('login.html')
@@ -122,8 +125,11 @@ def bye():
     db = connect().round2
     username = data['username']
     del data['username']
-    db.update_one({'username': username}, {'$set': data}, upsert=True)
-    return jsonify({'status': 'Success'})
+    if data:
+        db.update_one({'username': username}, {'$set': data}, upsert=True)
+        return jsonify({'status': 'Success'})
+    else:
+        return jsonify({'status': 'Error'})
 
 
 if __name__ == '__main__':

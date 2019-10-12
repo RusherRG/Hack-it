@@ -1,0 +1,69 @@
+<p>
+    Consider two points, p = (p<sub>x</sub>,p<sub>y</sub>) and q = (q<sub>x</sub>,q<sub>y</sub>). We consider the inversion or point reflection, r = (r<sub>x</sub>,r<sub>y</sub>) , of point P across point Q to be a 180<sup>o</sup> rotation of point P around Q.
+    <br>
+    Given n sets of points P and Q, find R for each pair of points and print two space-separated integers denoting the respective values of r<sub>x</sub> and r<sub>y</sub> on a new line.
+</p>
+<br>
+<p>
+    <b>Input Format</b>
+    <br>
+    <br>
+    The first line contains an integer, n, denoting the number of sets of points.
+    <br>
+    Each of the n subsequent lines contains four space-separated integers describing the respective values of p<sub>x</sub>, p<sub>y</sub>, q<sub>x</sub>, and q<sub>y</sub> defining points p = (p<sub>x</sub>,p<sub>y</sub>) and q = (q<sub>x</sub>,q<sub>y</sub>)
+</p>
+<br>
+<p>
+    <b>Constraints</b>
+    <ul>
+        <li>
+            1 &lt;= n &lt;= 15
+        </li>
+        <li>
+            -100 &lt;= p<sub>x</sub>, p<sub>y</sub>, q<sub>x</sub>, q<sub>y</sub> &lt;= 100
+        </li>
+    </ul>
+</p>
+<br>
+<p>
+    <b>Output Format</b>
+    <br>
+    <br>
+    For each pair of points p and q, print the corresponding respective values of r<sub>x</sub> and r<sub>y</sub> as two space-separated integers on a new line.
+</p>
+<br>
+<p>
+    <b>Sample Input</b>
+    <br>
+    2
+    <br>
+    0 0 1 1
+    <br>
+    1 1 2 2
+</p>
+<br>
+<p>
+    <b>Sample Output</b>
+    <br>
+    2 2
+    <br>
+    3 3
+</p>
+<br>
+<p>
+    <b>Explanation</b>
+    <br>
+    The graphs below depict points p, q, and r for the n=2 points given as Sample Input:
+    <br>
+    1.
+    <br>
+    <img src="https://s3.amazonaws.com/hr-challenge-images/128/1476208076-15f0f71f16-find-point-0011.png">
+    <br>
+    Thus, we print r<sub>x</sub> and r<sub>y</sub> as 2 2 on a new line.
+    <br>
+    2.
+    <br>
+    <img src="https://s3.amazonaws.com/hr-challenge-images/128/1476207535-debed1b871-find-point-1122.png">
+    <br>
+    Thus, we print r<sub>x</sub> and r<sub>y</sub> as 3 3 on a new line.
+</p>

@@ -1,7 +1,7 @@
 var code_status = {}
 var username = ""
 var timer = 0
-$("#submitCode").click(function () {
+$(".submitCode").click(function () {
     // TODO: Login and start timer (backend call for login)
 
     var txt = $(".activeq").children()[0].innerHTML;
@@ -9,32 +9,44 @@ $("#submitCode").click(function () {
     var ques = txt.split('\n')[1];
     var testcase = $(".activeq").find(".input").children()[0].value;
     console.log(lang + ques + testcase);
+    $(this).css("pointer-events", "none");
+    butt = this;
     $.ajax({
         url: "/check_kar",
         type: "get",
         data: {
             lang: lang,
             q: ques,
-            test_case: testcase
+            test_case: testcase,
+            username: code_status['username']
         },
         success: function (result) {
             console.log(result);
             snack(result.message, result.status);
             $(".activeq").find(".output")[0].innerText = result.message;
             code_status[ques] = result.status;
+            if (result.status == 'red') {
+                distance = distance - 1 * 1000 * 60;
+            }
+            $(butt).css("pointer-events", "auto");
+        },
+        error: function () {
+            $(butt).css("pointer-events", "auto");
         }
     });
     // $(".qcont").toggleClass('hide')
     // $(".active").toggleClass('active').next().toggleClass('active')
 });
 
-$(".submitRound").click(function() {
+$(".submitRound").click(function () {
+    code_status['final_time'] = document.getElementById("demo").innerHTML;
      $.ajax({
         url: "/bye",
         type: "get",
         data: code_status,
         success: function(result) {
-            console.log(result);
+            snack(result.status, 'green');
+            window.location.href = 'http://kjscecodecell.com/';
         }
     });
 });
@@ -87,6 +99,9 @@ var x = setInterval(function () {
         clearInterval(x);
         document.getElementById("demo").innerHTML = "EXPIRED";
         //Submit Final and redirect
+        $('.qcont').removeClass('activeq');
+        $('.q3').addClass('activeq');
+        $('.progressbar').css('display', 'none');
     }
     distance = distance - 1000;
 }, 1000);
