@@ -24,7 +24,7 @@ $(".submitCode").click(function () {
             console.log(result);
             snack(result.message, result.status);
             $(".activeq").find(".output")[0].innerText = result.message;
-            code_status[ques] = result.status;
+            // code_status[ques] = result.status;
             if (result.status == 'red') {
                 distance = distance - 1 * 1000 * 60;
             }
