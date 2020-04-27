@@ -4,7 +4,7 @@ import random
 import subprocess
 from subprocess import PIPE
 from pymongo import MongoClient
-mongodb_url = "mongodb://codecell:rush3rRg@ds333768.mlab.com:33768/crackathon"
+mongodb_url = "mongodb://localhost:10000"
 
 
 from flask import Flask, request, render_template, jsonify
@@ -26,18 +26,18 @@ def check_credentials(username, password):
         timer = time.time()
         # print(username, password)
         if user:
-            print(timer - user['time'] + 60*user['penalty'])
+            # print(timer - user['time'] + 60*user['penalty'])
             return timer - user['time'] + 60*user['penalty']
         else:
             db.insert({'username': username, 'password': password, 'time': timer, 'penalty': 0})
-            print("inserting new")
+            # print("inserting new")
             return 0
-    print("Not found")
+    # print("Not found")
     return None
 
 
 def run_code(q, lang, test_case, code_type):
-    print(lang)
+    # print(lang)
     if lang in ['python', 'java']:
         output = subprocess.run(['python3', './Codes/{}/{}/{}.py'.format(phase, q, code_type)],
                                 stdout=PIPE, input=test_case, encoding='ascii')
@@ -58,8 +58,8 @@ def diff():
     lang, q, test_case = data['lang'].strip(), data['q'].strip(), data['test_case']
     correct_output = run_code(q, lang, test_case, 'correct')
     wrong_output = run_code(q, lang, test_case, 'wrong')
-    print(correct_output)
-    print(wrong_output)
+    # print(correct_output)
+    # print(wrong_output)
     db = connect().round2
     if correct_output != wrong_output:
         db.update_one({'username': username}, {'$set': {q: True}})
@@ -95,8 +95,8 @@ def index():
     try:
         data = request.args.to_dict()
         timer = check_credentials(data['username'], data['password'])
-        print(data)
-        print(timer)
+        # print(data)
+        # print(timer)
         username = data['username']
         if timer!=None:
             data = {
@@ -116,20 +116,20 @@ def index():
                     code = ''.join(code[1:])
                 data['ps'].append(ps)
                 data['code'].append(code)
-            print(data)
-            print("start render")
+            # print(data)
+            # print("start render")
             return render_template('index.html', data=data)
         else:
             return render_template('login.html')
     except Exception as e:
-        print(e)
+        # print(e)
         return render_template('login.html')
 
 
 @app.route('/bye')
 def bye():
     data = request.args.to_dict()
-    print(data)
+    # print(data)
     db = connect().round2
     username = data['username']
     del data['username']
@@ -139,6 +139,13 @@ def bye():
     else:
         return jsonify({'status': 'Error'})
 
+def populate():
+    mega_db = connect().participants
+    for i in range(100):
+        username = 'admin' + str(i)
+        password = 'password' + str(i)
+        mega_db.insert({'username': username, 'password': password})
 
 if __name__ == '__main__':
+    populate()
     app.run()
