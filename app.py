@@ -4,7 +4,7 @@ import random
 import subprocess
 from subprocess import PIPE
 from pymongo import MongoClient
-mongodb_url = "mongodb://localhost:10000"
+mongodb_url = os.getenv('MONGODB_URI')
 
 
 from flask import Flask, request, render_template, jsonify
